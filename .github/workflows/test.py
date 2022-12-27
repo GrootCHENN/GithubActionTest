@@ -1,6 +1,8 @@
 
 def hello_world():
-  print("hello world git action")
+  with open("./demo.txt","r") as f:
+    txt = f.read()
+    print(txt)
  
 if __name__ == "__main__":
   hello_world()
