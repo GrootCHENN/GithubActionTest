@@ -19,7 +19,7 @@ jobs:
       - name: parse Package.swift
         id: run_swift
         run:
-          echo "package=$(swift package dump-package)" >> $GITHUB_OUTPUT
+          echo 'package=$(swift package dump-package)' >> $GITHUB_OUTPUT
           
       - name: Run a python in current branch
         run: 
