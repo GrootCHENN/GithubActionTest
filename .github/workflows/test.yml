@@ -18,7 +18,7 @@ jobs:
         
       - name: Run a python in current branch
         run: |
-          echo "current branch is ${{ GITHUB.REF" }}
+          echo "current branch is ${{ github.ref_name" }}
           python .github/workflows/test.py
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -32,7 +32,7 @@ jobs:
           
       - name: Run a python in main branch
         run: |
-          echo "current branch is ${{ GITHUB.REF" }}
+          echo "current branch is ${{ github.ref_name" }}
           python .github/workflows/test.py
         env:
           GITHUB_TOKEN: ${{ github.token }}
