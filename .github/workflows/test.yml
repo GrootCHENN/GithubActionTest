@@ -16,11 +16,28 @@ jobs:
       - name: install package
         run: pip install requests
         
-      - name: Run a python script
-        run: python .github/workflows/test.py
+      - name: Run a python in current branch
+        run: |
+          echo "current branch is ${{ GITHUB.REF" }}
+          python .github/workflows/test.py
         env:
           GITHUB_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
+          
+      - name: switch branch
+        run: |
+          cd ..
+          git brnach -v
+          git checkout main
+          
+      - name: Run a python in main branch
+        run: |
+          echo "current branch is ${{ GITHUB.REF" }}
+          python .github/workflows/test.py
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}    
+          
       - name: print evn
         run: 
           # if the "on" is pull_request, that we can access this variable
