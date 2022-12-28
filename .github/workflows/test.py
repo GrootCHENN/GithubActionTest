@@ -33,4 +33,4 @@ if __name__ == "__main__":
     print("get title -- {}".format(title))
     print("get repostitory -- {}".format(repository))
   read_file()
-  edit_pr()
+#   edit_pr()
