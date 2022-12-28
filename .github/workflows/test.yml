@@ -26,5 +26,5 @@ jobs:
       - name: Run a python script
         run: python .github/workflows/test.py
         env:
-          GITHUB_TOKEN: ${{ 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 }}
-          PR_TITLE: ${{ use python update pr title }}
+          GITHUB_TOKEN: "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"
+          PR_TITLE: "use python update pr title"
