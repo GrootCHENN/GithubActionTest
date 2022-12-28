@@ -29,5 +29,5 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
       - name: print evn
-        run: |
-          echo: pr number is -- ${{ github.event.pull_request.number }}
+        run: 
+          echo "pr number is -- ${{ github.event.pull_request.number }}"
