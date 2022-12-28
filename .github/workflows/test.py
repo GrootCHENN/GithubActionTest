@@ -7,7 +7,7 @@ def read_file():
     txt = f.read()
     print(txt)
 def edit_pr():
-  url = "https://api.github.com/repos/GrootCHENN/GithubActionTest/pulls/1"
+  url = "https://api.github.com/repos/GrootCHENN/GithubActionTest/pulls/2"
   headers = {
       "Accept": "application/vnd.github+json",
       "Authorization": "Bearer {}".format(token),
