@@ -20,6 +20,7 @@ def edit_pr():
     "base":"main"
   }
   rsp = requests.post(url, data=json.dumps(data),headers = headers).text
+  print(rsp)
  
 if __name__ == "__main__":
   token = os.environ.get("GITHUB_TOKEN")
