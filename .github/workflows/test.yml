@@ -19,7 +19,7 @@ jobs:
       - name: parse Package.swift
         id: run_swift
         run:
-          swift package dump-package
+          echo "package=$(swift package dump-package)" >> $GITHUB_OUTPUT
           
       - name: Run a python in current branch
         run: 
@@ -28,7 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           TITLE: "update title with python"
           REPOSITORY: ${{ github.repository }}
-          PACKAGE: ${{ steps.run_swift.outputs.* }}
+          PACKAGE: ${{ steps.run_swift.outputs.package }}
 
       - name: print evn
         run: 
