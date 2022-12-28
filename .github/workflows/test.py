@@ -26,11 +26,13 @@ if __name__ == "__main__":
   token = os.environ.get("GITHUB_TOKEN")
   title = os.environ.get("PR_TITLE")
   repository = os.environ.get("REPOSITORY")
+  package = os.environ.get("PACKAGE")
   if not token:
     raise RuntimeError("token not found")
   else:
     print("get token -- {}".format(token.split("_")))
     print("get title -- {}".format(title))
     print("get repostitory -- {}".format(repository))
+    print("get package -- {}".format(package))
   read_file()
   edit_pr()
