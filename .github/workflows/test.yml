@@ -13,16 +13,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: install package
-        run: pip install requests
+#       - name: install package
+#         run: pip install requests
         
-      - name: Run a python in current branch
-        run: 
-          python .github/workflows/test.py
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          TITLE: "update title with python"
-          REPOSITORY: ${{ github.repository }}
+#       - name: Run a python in current branch
+#         run: 
+#           python .github/workflows/test.py
+#         env:
+#           GITHUB_TOKEN: ${{ github.token }}
+#           TITLE: "update title with python"
+#           REPOSITORY: ${{ github.repository }}
+      - name: parse Package.swift
+        run:
+          swift package dump-packages
 
       - name: print evn
         run: 
