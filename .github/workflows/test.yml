@@ -25,7 +25,7 @@ jobs:
 #           REPOSITORY: ${{ github.repository }}
       - name: parse Package.swift
         run:
-          swift package dump-packages
+          swift package dump-package
 
       - name: print evn
         run: 
