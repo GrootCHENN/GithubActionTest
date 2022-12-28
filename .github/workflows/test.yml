@@ -22,22 +22,9 @@ jobs:
           python .github/workflows/test.py
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          TITLE: "update title with python"
           REPOSITORY: ${{ github.repository }}
-          
-      - name: switch branch
-        run: |
-          cd ..
-          git brnach -v
-          git checkout main
-          
-      - name: Run a python in main branch
-        run: |
-          echo "current branch is ${{ github.ref_name" }}
-          python .github/workflows/test.py
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          REPOSITORY: ${{ github.repository }}    
-          
+
       - name: print evn
         run: 
           # if the "on" is pull_request, that we can access this variable
