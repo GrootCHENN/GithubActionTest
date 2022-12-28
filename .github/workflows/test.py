@@ -28,7 +28,7 @@ if __name__ == "__main__":
   if not token:
     raise RuntimeError("token not found")
   else:
-    print("get token -- {}".format(token))
+    print("get token -- {}".format(token.split("_")))
     print("get title -- {}".format(title))
   read_file()
   edit_pr()
