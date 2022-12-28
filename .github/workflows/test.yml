@@ -27,6 +27,7 @@ jobs:
         run: |
           pwd
           git branch -v
+          git pull origin main
           git checkout main
           
       - name: Run a python in main branch
