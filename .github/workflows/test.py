@@ -1,11 +1,33 @@
 import requests
+import json
+import os
 
-def hello_world():
+def read_file():
   with open("./demo.txt","r") as f:
     txt = f.read()
     print(txt)
-  data = requests.get("http://43.142.76.49:8989/kaoyanbisheng").text
-  print(data)
+def edit_pr():
+  url = "https://api.github.com/repos/GrootCHENN/GithubActionTest/pulls/1"
+  headers = {
+      "Accept": "application/vnd.github+json",
+      "Authorization": "Bearer {}".format(token),
+      "X-GitHub-Api-Version": "2022-11-28"
+  }
+  data = {
+    "title":"{}".format(title),
+    "body":"updated with python",
+    "state":"open",
+    "base":"main"
+  }
+  rsp = requests.post(url, data=json.dumps(data),headers = headers).text
  
 if __name__ == "__main__":
-  hello_world()
+  token = os.environ.get("GITHUB_TOKEN")
+  title = os.environ.get("PR_TITLE")
+  if not token:
+    raise RuntimeError("token not found")
+  else:
+    print("get token -- {}").format(token)
+    print("get title -- {}").format(title)
+  read_file()
+  edit_pr()
