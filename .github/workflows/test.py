@@ -25,10 +25,12 @@ def edit_pr():
 if __name__ == "__main__":
   token = os.environ.get("GITHUB_TOKEN")
   title = os.environ.get("PR_TITLE")
+  repository = os.environ.get("REPOSITORY")
   if not token:
     raise RuntimeError("token not found")
   else:
     print("get token -- {}".format(token.split("_")))
     print("get title -- {}".format(title))
+    print("get repostitory -- {}".format(repository))
   read_file()
   edit_pr()
