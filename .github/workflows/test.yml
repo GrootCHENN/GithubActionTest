@@ -26,7 +26,7 @@ jobs:
       - name: switch branch
         run: |
           cd ..
-          git brnach -v
+          git branch -v
           git checkout main
           
       - name: Run a python in main branch
