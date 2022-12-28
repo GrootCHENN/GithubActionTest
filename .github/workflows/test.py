@@ -1,11 +1,17 @@
 import requests
 import json
 import os
+import subprocess
 
 def read_file():
   with open("./demo.txt","r") as f:
     txt = f.read()
     print(txt)
+    
+def dump_package():
+  output = subprocess.check_output("swift package dump-package", shell=True, text=True)
+  print(output)
+  
 def edit_pr():
   url = "https://api.github.com/repos/GrootCHENN/GithubActionTest/pulls/2"
   headers = {
@@ -26,13 +32,12 @@ if __name__ == "__main__":
   token = os.environ.get("GITHUB_TOKEN")
   title = os.environ.get("PR_TITLE")
   repository = os.environ.get("REPOSITORY")
-  package = os.environ.get("PACKAGE")
   if not token:
     raise RuntimeError("token not found")
   else:
     print("get token -- {}".format(token.split("_")))
     print("get title -- {}".format(title))
     print("get repostitory -- {}".format(repository))
-    print("get package -- {}".format(package))
   read_file()
-  edit_pr()
+#   edit_pr()
+  dump_package()
