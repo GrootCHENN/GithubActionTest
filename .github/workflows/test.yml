@@ -4,6 +4,8 @@ name: CI
 
 # Controls when the workflow will run
 on:
+  pull_request:
+    types: [opened, reopened]
   workflow_dispatch:
 
 jobs:
@@ -13,30 +15,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-#       - name: install package
-#         run: pip install requests
+      - name: install package
+        run: pip install requests
           
       - name: Run a python in current branch
         run: 
           python .github/workflows/test.py
         env:
-          GITHUB_TOKEN: ${{ github.token }}
-          TITLE: "update title with python"
-          REPOSITORY: ${{ github.repository }}
+          GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_REPO: ${{ github.repository }}
+          BRANCH_NAME: ${{ github.ref_name }}
           
       - uses: actions/checkout@v3
         with:
           ref: main
-          
-      - name: Run a python in main branch
-        run: 
-          python .github/workflows/test.py
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          TITLE: "update title with python"
-          REPOSITORY: ${{ github.repository }}
-          
-      - name: print evn
-        run: 
-          # if the "on" is pull_request, that we can access this variable
-          echo "pr number is -- ${{ github.event.pull_request.number }}"
+
