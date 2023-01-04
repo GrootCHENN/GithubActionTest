@@ -19,8 +19,10 @@ class Package:
 
 class DMAlert:
     github_repo: str
-    github_url: str
-    branch_name: str = "main"
+    github_pr_number: str
+    github_pr_url: str
+    is_main_branch: bool = True
+    branch_name: str
     diff_value: dict
 
     def __init__(self):
@@ -29,7 +31,7 @@ class DMAlert:
     def run(self):
         swift_package_dump_output = self.run_command("swift package dump-package")
         package_targets = self.parse_packages(self.str_to_json(swift_package_dump_output))
-        if self.branch_name == "main":
+        if self.is_main_branch:
             old_targets = self.read_from_local()
             new_targets = package_targets
             self.get_diff(old_targets, new_targets)
@@ -38,15 +40,18 @@ class DMAlert:
             self.save_in_local(package_targets)
 
     def load_env(self):
-        github_repo = os.environ.get("GITHUB_REPO")
-        github_url = os.environ.get("GITHUB_URL")
-        branch_name = os.environ.get("BRANCH_NAME")
-        if branch_name is None:
+        self.github_repo = os.environ.get("GITHUB_REPO")
+        self.github_pr_number = str(os.environ.get("GITHUB_PR_NUMBER"))
+        self.branch_name = os.environ.get("BRANCH_NAME")
+        if self.branch_name is None:
             raise Exception("can't find BRANCH_NAME ENV in Github action.")
-        if github_url is None:
-            raise Exception("can't find GITHUB_URL ENV in Github action.")
-        if github_repo is None:
+        if self.github_pr_number is None:
+            raise Exception("can't find GITHUB_PR_NUMBER ENV in Github action.")
+        if self.github_repo is None:
             raise Exception("can't find GITHUB_REPO ENV in Github action.")
+        self.github_pr_url = "https://github.com/{}/pull/{}".format(self.github_repo, self.github_pr_number)
+        print(self.branch_name)
+        self.is_main_branch = self.branch_name == "main"
 
     def run_command(self, command: str) -> str:
         output = subprocess.check_output(command, shell=True, text=True)
@@ -129,7 +134,7 @@ class DMAlert:
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*The {} has been updated in this branch*\n*<{}|{}>*".format(self.github_repo, self.github_url, self.branch_name)
+                        "text": "*The {} has been updated in this branch*\n*<{}|{}>*".format(self.github_repo.split("/")[-1], self.github_pr_url, self.branch_name)
                     }
                 },
                 {
@@ -157,7 +162,7 @@ class DMAlert:
             for index, data in enumerate(value):
                 if index == 0:
                     msg += subline(data["package_name"], index+1)
-                elif index == len(value) -1:
+                elif index == len(value) - 1:
                     msg += subline(data["package_name"], index+1)
                 else:
                     msg += subline(data["package_name"], index+1)
