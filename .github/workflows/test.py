@@ -50,7 +50,7 @@ class DMAlert:
         if self.github_repo is None:
             raise Exception("can't find GITHUB_REPO ENV in Github action.")
         self.github_pr_url = "https://github.com/{}/pull/{}".format(self.github_repo, self.github_pr_number)
-        print(self.branch_name)
+        print(self.branch_name,self.github_repo,self.github_pr_number)
         self.is_main_branch = self.branch_name == "main"
 
     def run_command(self, command: str) -> str:
