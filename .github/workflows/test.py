@@ -42,7 +42,7 @@ class DMAlert:
     def load_env(self):
         self.github_repo = os.environ.get("GITHUB_REPO")
         self.github_pr_number = str(os.environ.get("GITHUB_PR_NUMBER"))
-        self.branch_name = os.environ.get("BRANCH_NAME")
+        self.branch_name = os.environ.get("GITHUB_HEAD_REF")
         if self.branch_name is None:
             raise Exception("can't find BRANCH_NAME ENV in Github action.")
         if self.github_pr_number is None:
