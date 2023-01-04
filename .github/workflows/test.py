@@ -21,13 +21,13 @@ class DMAlert:
     github_repo: str
     github_pr_number: str
     github_pr_url: str
-    is_main_branch: bool = True
+    is_main_branch: bool
     branch_name: str
     diff_value: dict
 
     def __init__(self):
         self.load_env()
-
+        
     def run(self):
         swift_package_dump_output = self.run_command("swift package dump-package")
         package_targets = self.parse_packages(self.str_to_json(swift_package_dump_output))
@@ -40,8 +40,10 @@ class DMAlert:
             self.save_in_local(package_targets)
 
     def load_env(self):
+        # env provide in github action .yml file
         self.github_repo = os.environ.get("GITHUB_REPO")
         self.github_pr_number = str(os.environ.get("GITHUB_PR_NUMBER"))
+        # GITHUB_HEAD_REF is a default env when trigger is pull_request
         self.branch_name = os.environ.get("GITHUB_HEAD_REF")
         if self.branch_name is None:
             raise Exception("can't find BRANCH_NAME ENV in Github action.")
@@ -50,7 +52,7 @@ class DMAlert:
         if self.github_repo is None:
             raise Exception("can't find GITHUB_REPO ENV in Github action.")
         self.github_pr_url = "https://github.com/{}/pull/{}".format(self.github_repo, self.github_pr_number)
-        print(self.branch_name,self.github_repo,self.github_pr_number)
+        print(self.branch_name, self.github_pr_url)
         self.is_main_branch = self.branch_name == "main"
 
     def run_command(self, command: str) -> str:
@@ -85,9 +87,9 @@ class DMAlert:
 
     def save_in_local(self, data: dict):
         with open("./package.json", "w") as f:
-            f.write(json.dumps(data,indent=4))
+            f.write(json.dumps(data, indent=4))
             f.close()
-            print("save package.json to local -- Done!")
+            print("✅ save package.json to local -- Done!")
 
     def read_from_local(self) -> json:
         with open("./package.json", "r") as f:
@@ -125,7 +127,7 @@ class DMAlert:
             if len(value) == 0:
                 diff_values.pop(key)
         self.diff_value = diff_values
-        # print(json.dumps(diff_values, indent=4, ensure_ascii=False))
+        print(json.dumps(diff_values, indent=4, ensure_ascii=False))
 
     def send_msg_in_slack(self):
         payload = {
@@ -150,22 +152,16 @@ class DMAlert:
             "Content-Type": "application/json"
         }
         rsp = requests.post("https://hooks.slack.com/services/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",
-                            data=json.dumps(payload),
-                            headers=headers).text
+                            data=json.dumps(payload)).text
         print(rsp)
-        # print(json.dumps(payload, indent=4))
 
     def content_builder(self) -> str:
         msg = ""
         for key, value in self.diff_value.items():
             msg += switch_line(bold(key.upper()))
             for index, data in enumerate(value):
-                if index == 0:
-                    msg += subline(data["package_name"], index+1)
-                elif index == len(value) - 1:
-                    msg += subline(data["package_name"], index+1)
-                else:
-                    msg += subline(data["package_name"], index+1)
+                content = subline(data["package_name"] + " (" + data["version"] + ")", index+1)
+                msg += content
         print(msg)
         return msg
 
@@ -179,10 +175,8 @@ def bold(s: str) -> str:
     return "*{}*".format(s+":")
 
 def subline(s: str, index: int) -> str:
-    # return "{}".format("    "+s+", " if is_first else s+".\n" if is_last else s+", ")
     return "{}".format("    "+str(index)+". "+s+"\n")
 
 if __name__ == "__main__":
-    # ENV should have GITHUB_REPO and GITHUB_URL
     main = DMAlert()
     main.run()
