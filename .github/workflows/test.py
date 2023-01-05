@@ -178,5 +178,9 @@ def subline(s: str, index: int) -> str:
     return "{}".format("    "+str(index)+". "+s+"\n")
 
 if __name__ == "__main__":
-    main = DMAlert()
-    main.run()
+#     main = DMAlert()
+#     main.run()
+    print("running python")
+    print(os.environ.get("GITHUB_WORKSPACE"))
+    output = subprocess.check_output("git branch - v", shell=True, text=True, cwd=os.environ.get("GITHUB_WORKSPACE"))
+    print(output)
