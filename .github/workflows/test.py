@@ -182,5 +182,5 @@ if __name__ == "__main__":
 #     main.run()
     print("running python")
     print(os.environ.get("GITHUB_WORKSPACE"))
-    output = subprocess.check_output("ls", shell=True, text=True, cwd=os.environ.get("GITHUB_WORKSPACE"))
+    output = subprocess.check_output("git checkout pr_test", shell=True, text=True, cwd=os.environ.get("GITHUB_WORKSPACE"))
     print(output)
