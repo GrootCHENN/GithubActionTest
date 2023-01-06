@@ -17,11 +17,11 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: install package
-        run: pip install requests
+#       - name: install package
+#         run: pip install requests
           
       - name: Run a python in current branch
         run: 
-          python .github/workflows/test.py
+          python test.py
 
 
