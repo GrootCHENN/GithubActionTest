@@ -182,6 +182,6 @@ if __name__ == "__main__":
 #     main.run()
     print("running python")
     print(os.environ.get("GITHUB_WORKSPACE"))
-    subprocess.call("git pull origin ", shell=True, cwd=os.environ.get("GITHUB_WORKSPACE"))
+    subprocess.call("git fetch origin pr_test", shell=True, cwd=os.environ.get("GITHUB_WORKSPACE"))
     subprocess.call("git branch -v", shell=True, cwd=os.environ.get("GITHUB_WORKSPACE"))
     
